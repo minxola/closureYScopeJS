@@ -1,0 +1,25 @@
+{
+  "name": "closureyscopejs",
+  "version": "1.0.0",
+  "description": "Closures and Scopes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minxola/closureYScopeJS.git"
+  },
+  "keywords": [
+    "socpes",
+    "closures",
+    "hoisting",
+    "debugging"
+  ],
+  "author": "minxola",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/minxola/closureYScopeJS/issues"
+  },
+  "homepage": "https://github.com/minxola/closureYScopeJS#readme"
+}
