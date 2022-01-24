@@ -102,6 +102,43 @@ const x = 400; //SyntaxError
 
 ### 3. Local Scope
 
+El scope se puede definir como el alcance que puede tener una variable en tu codigo.
+
+**El Local Scope:** se refiere a la variable o funcion que esta dentro de un bloque o funcion especifica. Solo se pueden acceder a ellas (ejecutar o llamar) dentro del entrono en donde conviven.
+
+```js
+const myFunction = () => {
+    const msg = 'Hello World';
+    console.log(smg);
+}
+//ejecutar la función, tiene acceso local
+myFunction(); //Hello World
+
+//Intentar acceder a la variable smg, da error, no es global, no puede acceder a la variable declarada dentro de la función.
+console.log(msg); //ReferenceError: msg is not defined
+
+```
+
+**El ambito lexico:** se refiere a que una funcion puede acceder a una funcion o variable en el contexto donde se definió, solo al no encontrarla buscará su definición en un ámbito superior hasta encontrar la primera difinición. Se dará prioridad al local scope en lugar del global scope.
+
+```js
+var scope = 'I am global';
+
+const scopeFunction = () => {
+    var scope = 'I am just a local';
+    const otherFunction = () => {
+        return scope;
+    }
+    console.log(otherFunction());
+}
+
+//Al ejecutar la función, solo toma la variable local, no reasigna el valor de scope, por mas que esté en global, esto es ambito lexico
+scopeFunction(); //I am just local
+
+//Al imprimir el scope, este accede a 'scope' global, ya que se encuentra en su ambito, y no puede acceder a la variable declarada dentro de la función, por ser solo local
+console.log(scope); //I am global
+```
+
 ### 4. Function Scope
 
 ### 5. Block Scope
