@@ -106,6 +106,11 @@ El scope se puede definir como el alcance que puede tener una variable en tu cod
 
 **El Local Scope:** se refiere a la variable o funcion que esta dentro de un bloque o funcion especifica. Solo se pueden acceder a ellas (ejecutar o llamar) dentro del entrono en donde conviven.
 
+El local scope puede ser:
+
+- Local Scope de Función
+- Local Scope de Bloque
+
 ```js
 const myFunction = () => {
     const msg = 'Hello World';
@@ -179,7 +184,143 @@ Se debe tener cuidad al declarar variables, de preferencia usar `let` y `const` 
 
 ### 5. Block Scope
 
+Un bloque es un espacio de código delimitado por llaves, puede darse en casos de loops y condicionales. Al declarar variables `var` tiene alcance de función, `let` y `const` tienen alcance de bloque.
 
+```js
+const fruits = () => {
+    if (true) {
+        var fruit1 = 'apple';
+        var fruit2 = 'banana';
+        var fruit3 = 'kiwi';
+    }
+    console.log(fruit1);
+    console.log(fruit2);
+    console.log(fruit3);
+}
+//ejecutar la función
+fruits();
+//apple
+//banana
+//kiwi
+```
+
+El código anterior funciona sin problemas, ya que var tiene un **scope de función**, es decir se puede acceder a la variable declarada con `var` desde cualquier parte del código siempre que esté dentro de la función.
+
+```js
+const fruits = () => {
+    if (true) {
+        var fruit1 = 'apple';
+        let fruit2 = 'banana';
+        const fruit3 = 'kiwi';
+    }
+    console.log(fruit1);
+    console.log(fruit2);
+    console.log(fruit3);
+}
+//al ejecutar la funcion nos da error
+fruits();
+//apple
+//ReferenceError, fruit2 is not defined
+```
+
+En el código anterior, al ejecutar la función, solo se imprime apple ya que fue declarada con var, para `let` y `const` nos dará un error de referencia, ya que no se puede acceder a dichas variables por tener un **scope de bloque**.
+
+Para poder acceder correctamente a estas variables el código se tendría que modificar, según el alcance de las variables.
+
+```js
+const fruits = () => {
+    if (true) {
+        var fruit1 = 'apple';
+        let fruit2 = 'banana';
+        const fruit3 = 'kiwi';
+		//block scope
+        console.log(fruit2);
+        console.log(fruit3);
+    }
+    //function scope
+    console.log(fruit1);
+}
+
+fruits();
+//apple
+//banana
+//kiwi
+```
+
+---
+
+```js
+let x = 1;
+{
+    let x = 2;
+    console.log(x);//2
+}
+console.log(x); //1
+```
+
+En el código anterior,  el `console.log(x)` dentro del bloque accede a la variable local `let x = 2` debido a que está en su ámbito léxico.
+
+El `console.log(x)` que esta fuera del bloque, no puede acceder a la asignación `let x = 2` ya que tiene un alcance local de bloque, sin embargo si puede acceder a la declaración `let x = 1` ya que esta fuera del bloque, es decir en su ámbito léxico.
+
+Si cambiamos el código a lo siguiente:
+
+```js
+var x = 1;
+{
+    var x = 2;
+    console.log(x);//2
+}
+console.log(x); //2
+```
+
+En este caso al imprimir `console.log(x)`, en ambos casos nos da el valor de `2`, debido a que `var` tiene un alcance de función y no de bloque. En este caso primero se asigna `var x = 1` y luego se hace una re-declaración y re-asignación `var x = 2`, que es el último valor que se imprime.
+
+Por eso no se debe declarar variables con `var` dentro de un bloque, se debe preferir en este caso `let`.
+
+---
+
+Cuando creamos un ciclo con la declaracion de la variable usando `var`
+
+```js
+//Ciclo for con VAR
+const myFunc = () => {
+    for (var i = 0; i < 10; i++) {
+        setTimeout(() => {
+            console.log(i);
+        }, 5000);
+        
+    }
+}
+
+myFunc();// 10 10 10 10 ....(10 veces)
+```
+
+En el código anterior sucede lo siguiente:
+
+- En la primera iteración `i = 0` crea un bloque donde se ejecuta `setTimeout()`, que imprimirá su `console.log(i)` cuando pase el tiempo indicado.
+- En la segunda iteración `i = 1` se creará otro bloque con otro `setTimeout()`, que imprimirá su `console.log(i)` cuando pase el tiempo indicado.
+- Así se realiza cada iteración hasta terminar, el loop se detiene cuando `i = 10`, ya que no se cumple la condición, ya no se crea otro bloque.
+- Cuando pase el tiempo indicado, se ejecutarán todos los callback queue `setTimeout()`
+- Al intentar imprimir `console.log(i)`, el valor que tomarán será el final, puesto que la declaración con `var i` no respeta el bloque, sinó la función `myFunc`. Es decir se puede acceder al valor de `i` desde cualquier parte dentro de la función, en cada iteraicón el valor de `i` se está reasignando.
+- Se imprimira en cada iteración el valor final `i = 10`
+
+Sin embargo, si cambiamos la asignación de la variable con `let`:
+
+```js
+//Ciclo for con LET
+const myFunc = () => {
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+            console.log(i);
+        }, 5000);
+        
+    }
+}
+
+myFunc();//0 1 2 ...9
+```
+
+- Para el caso de que la variable es declarada con `let`, cada llamada a `setTimeout()` tiene asignado un valor de `i` según su iteración, por lo tanto al momento de imprimir `console.log(i)` se imprimirá el valor de `i` dentro del bloque, imprimiendose en este caso desde 1 hasta 9, ya que el valor de `i = 10` ya no cumple con la condición, por lo que no se genera un bloque final.
 
 ## Closure
 
