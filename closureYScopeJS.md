@@ -489,20 +489,18 @@ myFunct(); //0 1 2 ...9
 
 ### 10. Que es Hoisting
 
-En variables el hoisting se genera en la declaración de las mismas.
+En variables el hoisting se genera en la declaración de las mismas, es decir que la declaración de las variables se separa de su asignación.
 
 ```js
 a = 2;
 var a;
 console.log(a); //2
-```
-
-En el código anterior el hoisting genera un código:
-
-```js
-var a;
-a = 2;
-console.log(a); //2
+/*
+El hoisting genera:
+var a; //No tiene valor asignado
+a = 2; //Se le asigna un valor de 2
+console.log(a); //>2
+*/
 ```
 
 ___
@@ -515,6 +513,12 @@ var b = 10;
 
 //EL HOISTING SE GENERA EN LA DECLARACIÓN DE LA VARIABLE
 //Le asigna un valor de undefined
+/*
+var b; //No tiene valor asignado, no esta definido (undefined)
+console.log(b); //>undefined
+var b; //no tiene valor definido (undefined)
+b = 10; //valor definido igual a 10
+*/
 ```
 
 ---
@@ -529,19 +533,84 @@ function printName (name) {
     console.log(name);
 }
 
+/*
+El Hoisting eleva la función:
+function printName (name) {
+    console.log(name);
+}
+
+printName('Elmo'); //Elmo
+*/
 ```
 
 El hoisting lo que hace primero es elevar la función antes de ejecutar el llamado de la misma, por eso que al ejecutar la función, esta no tiene problema de imprimir el resultado.
+
+---
+
+El **Hoisting** se da en:
+
+- **Declaración de variables** con `var`, no en asignación
+- `function`, se da hoisting completo
+- `import` también tiene hoisting completo
+- Las clases no sufren hoisting
+
+Esto pasa en el momento que se compila el código, antes de ser interpretado por el navegador.
 
 ## Debugging
 
 ### 11. Debugging
 
+En navegador **Chrome** tiene herramientas de debugging, en las cuales podemos correr código y evaluar su comportamiento, para esto debemos agregar en nuestro código, la palabra reservada `debugger` justo donde queremos que la ejecución del código se detenga.
 
+```js
+//Para ejecutar en console (debugger)
+var a = "Hello";
+
+function hello () {
+    let b = 'Hello world';
+    const c = 'Hello world!';
+    if(true){
+        let d = 'Hello world!!';
+        debugger;
+    }
+}
+
+hello();
+
+//Para ejecutar en el console (debugger)
+//closure
+const moneyBox = (coins) => {
+    debugger; //Cuando entre a la función
+    var savedCoins = 0;
+    const countCoins = (coins) => {
+        debugger;
+        savedCoins = savedCoins + coins;
+        console.log(`MoneyBox: $${savedCoins}`);
+    }
+    debugger;
+    return countCoins;
+}
+
+let myMoneyBox = moneyBox();
+myMoneyBox(4);
+myMoneyBox(6);
+myMoneyBox(10);
+```
 
 ## Cierre
 
 ### 12. Conclusiones
+
+- Scope
+  - Global
+  - Local
+    - Function Scope
+    - Block Scope
+- Closures
+- Hoisting
+- Debugging
+
+**Never stop learging**
 
 
 
