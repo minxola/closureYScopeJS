@@ -560,7 +560,7 @@ Esto pasa en el momento que se compila el código, antes de ser interpretado por
 
 ### 11. Debugging
 
-En navegador **Chrome** tiene herramientas de debugging, en las cuales podemos correr código y evaluar su comportamiento, para esto debemos agregar en nuestro código, la palabra reservada `debugger` justo donde queremos que la ejecución del código se detenga.
+En navegador **Chrome** tiene herramientas de debugging (**Chrome DevTools**), en las cuales podemos correr código y evaluar su comportamiento, para esto debemos agregar en nuestro código, la palabra reservada `debugger` justo donde queremos que la ejecución del código se detenga.
 
 ```js
 //Para ejecutar en console (debugger)
