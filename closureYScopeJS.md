@@ -322,15 +322,168 @@ myFunc();//0 1 2 ...9
 
 - Para el caso de que la variable es declarada con `let`, cada llamada a `setTimeout()` tiene asignado un valor de `i` según su iteración, por lo tanto al momento de imprimir `console.log(i)` se imprimirá el valor de `i` dentro del bloque, imprimiendose en este caso desde 1 hasta 9, ya que el valor de `i = 10` ya no cumple con la condición, por lo que no se genera un bloque final.
 
+En resumen:
+
+|                               | `var`   | `let`  | `const` |
+| ----------------------------- | ------- | ------ | ------- |
+| Scope                         | FUNCION | BLOQUE | BLOQUE  |
+| Re-Asignación                 | SI      | SI     | NO      |
+| Re-Declaración                | SI      | NO     | NO      |
+| Declaración sin valor inicial | SI      | SI     | NO      |
+
 ## Closure
 
-### 6. Ámbito léxico en closures
+### 6. Que es un closure
 
-### 7. Que es un closure
+Una **clausura** o **closure** es una función que guarda referencias del estado adyacente (**Ámbito léxico**). En otras palabras, una **clausura** permite acceder al ámbito de una *función exterior* desde una *función interior*.
 
-### 8. Como agregar variables privadas con closures
+Otra definición sería, que un **Clousure** es la combinaicón entre una *función* y el *ámbito léxico* en el que esta fue declarada. Con esto, la función *recuerda* el ámbito en el que se creó.
+
+```js
+//En este caso no se genera un closure o clausura
+const moneyBox = (coins) => {
+    var saveCoins = 0;
+    saveCoins += coins;
+    console.log(`MoneyBox: $${saveCoins}`);
+}
+
+moneyBox(5);//$5
+moneyBox(10);//$10
+
+/*
+GENERANDO UN CLOSURE O CLAUSURA
+*/
+const moneyBox = (coins) => {
+    var savedCoins = 0;
+    const countCoins = (coins) => {
+        savedCoins = savedCoins + coins;
+        console.log(`MoneyBox: $${savedCoins}`);
+    }
+    return countCoins;
+}
+
+/*
+myMoneyBox es un CLOSURE, un tipo especial de objeto
+que combina: Una Función y El Ámbito donde se creó esa función.
+*/
+let myMoneyBox = moneyBox();
+
+/*
+Un closure puede recordar y acceder a variables y argumentos
+de su función externa, incluso despues de que la función
+externa haya finalizado.
+
+Un closure es una función o un Objeto con funciones, que recuerda
+el estado de las variables al momento de ser invocada, y conserva
+este estado a través de reiteradas ejecuciones.
+*/
+myMoneyBox(4); //MoneyBox: $4
+myMoneyBox(6); //MoneyBox: $6
+myMoneyBox(10); //MoneyBox: $10
+```
+
+
+
+### 7. Ámbito léxico en closures
+
+La palabra ***léxico*** hace referencia al hecho de que el ámbito léxico se basa en el lugar donde una variable fue declarada para determinar dónde esta variable estará disponible. Las funciones anidadas tienen acceso a las variables declaradas en su ámbito exterior.
+
+```js
+const buildCount = (i) => {
+    let count = i;
+    const displayCount = () => {
+        console.log(count++);
+    };
+    return displayCount;
+}
+
+//Se crea un scope o entorno léxico
+const count1 = buildCount(1);
+count1(); //1
+count1(); //2
+count1(); //3
+
+//Se crea un nuevo scope o entorno léxico
+const count2 = buildCount(10);
+count2(); //10
+count2(); //11
+count2(); //12
+```
+
+### 8. Como crear variables privadas con closures
+
+Lenguajes como Java ofrecen la posibilidad de declarar métodos privados, es decir, que sólo pueden ser llamados por otros métodos en la misma clase.
+
+JavaScript no proporciona una forma nativa de hacer esto, pero es posible emular métodos privados utilizando closures. Los métodos privados no son sólo útiles para restringir el acceso al código: también proporcionan una poderosa manera de administrar tu espacio de nombres global, evitando que los métodos no esenciales embrollen la interfaz pública de tu código.
+
+```js
+const person = () => {
+    var saveName = "Name";
+    return {
+        getName: () => { return saveName },
+        setName: (name) => { saveName = name; },
+    };
+};
+
+/*
+No se podrá acceder desde fuera a la variable saveName, ya
+que se hizo PRIVADA usando closures.
+Solo se le puede modificar usando los métodos establecidos
+en person()
+*/
+
+//Generando un ámbito lexico
+newPerson = person();
+console.log(newPerson.getName()); //Name
+
+newPerson.setName('Oscar');
+console.log(newPerson.getName()); //Oscar
+
+//Creando otro ambito lexico
+otherPerson = person();
+console.log(otherPerson.getName()); //Name
+
+otherPerson.setName('Rem');
+console.log(otherPerson.getName()); //Rem
+```
 
 ### 9. Loops
+
+Se debe tener cuidado al momento de hacer loops pues se podría estar generando closures involuntariamente, haciendonos perder el control de nuestro código y se ejecute de maneras inesperadas.
+
+```js
+//Cuando usamos VAR en loops se genera un CLOSURE involuntario
+const myFunction = () => {
+    for (var i = 0; i < 10; i++) {
+        setTimeout(() => {
+            console.log(i);
+        }, 5000);
+        
+    }
+}
+
+myFunction(); //10 10 10...10 (10 veces)
+
+/*
+En este caso se genera un closure involuntario y la función 
+setTimeout(), puede acceder al ambito léxico de la variable i,
+así que el momento de ejecutar el console.log(i) accede
+a la ultima asignación de i que es 10
+
+Esto se solución declarando la variable con let, lo cual limita
+el ámbito léxico de i al bloque generado en cada iteración {...}
+*/
+const myFunct = () => {
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+            console.log(i);
+        }, 5000);
+        
+    }
+}
+
+myFunct(); //0 1 2 ...9
+```
 
 ## Hoisting
 
