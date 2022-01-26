@@ -489,9 +489,55 @@ myFunct(); //0 1 2 ...9
 
 ### 10. Que es Hoisting
 
+En variables el hoisting se genera en la declaración de las mismas.
+
+```js
+a = 2;
+var a;
+console.log(a); //2
+```
+
+En el código anterior el hoisting genera un código:
+
+```js
+var a;
+a = 2;
+console.log(a); //2
+```
+
+___
+
+Si antes llamamos a `console.log()` en este caso también se genera hoisting.
+
+```js
+console.log(b); //undefined
+var b = 10;
+
+//EL HOISTING SE GENERA EN LA DECLARACIÓN DE LA VARIABLE
+//Le asigna un valor de undefined
+```
+
+---
+
+Cuando se declaran funciones también se puede generar hoisting
+
+```js
+//Se genera el hoisting
+printName('Elmo'); //Elmo
+
+function printName (name) {
+    console.log(name);
+}
+
+```
+
+El hoisting lo que hace primero es elevar la función antes de ejecutar el llamado de la misma, por eso que al ejecutar la función, esta no tiene problema de imprimir el resultado.
+
 ## Debugging
 
 ### 11. Debugging
+
+
 
 ## Cierre
 
