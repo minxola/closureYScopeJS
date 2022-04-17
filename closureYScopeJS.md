@@ -337,7 +337,7 @@ En resumen:
 
 Una **clausura** o **closure** es una función que guarda referencias del estado adyacente (**Ámbito léxico**). En otras palabras, una **clausura** permite acceder al ámbito de una *función exterior* desde una *función interior*.
 
-Otra definición sería, que un **Clousure** es la combinaicón entre una *función* y el *ámbito léxico* en el que esta fue declarada. Con esto, la función *recuerda* el ámbito en el que se creó.
+Otra definición sería, que un **Clousure** es la combinación entre una *función* y el *ámbito léxico* en el que esta fue declarada. Con esto, la función *recuerda* el ámbito en el que se creó.
 
 ```js
 //En este caso no se genera un closure o clausura
@@ -433,14 +433,14 @@ en person()
 */
 
 //Generando un ámbito lexico
-newPerson = person();
+const newPerson = person();
 console.log(newPerson.getName()); //Name
 
 newPerson.setName('Oscar');
 console.log(newPerson.getName()); //Oscar
 
 //Creando otro ambito lexico
-otherPerson = person();
+const otherPerson = person();
 console.log(otherPerson.getName()); //Name
 
 otherPerson.setName('Rem');
